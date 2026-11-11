@@ -59,7 +59,7 @@ Root: HKLM; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string
 Root: HKLM; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "VST3Path"; ValueData: "{commoncf}\VST3\JD Mix AI Engine.vst3"; Flags: uninsdeletekey
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
 ; Clean up app directory and VST3 bundle
@@ -74,7 +74,7 @@ var
   InstallPath: String;
 begin
   InstallPath := '';
-  RegQueryStringValue(HKLM, 'Software\JD Audio Labs\JD Mix AI Engine', 'InstallDir', InstallPath);
+  RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\JD Audio Labs\JD Mix AI Engine', 'InstallDir', InstallPath);
   Result := InstallPath;
 end;
 
@@ -84,7 +84,7 @@ var
   OldVersion: String;
 begin
   OldVersion := '';
-  if RegQueryStringValue(HKLM, 'Software\JD Audio Labs\JD Mix AI Engine', 'Version', OldVersion) then
+  if RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\JD Audio Labs\JD Mix AI Engine', 'Version', OldVersion) then
   begin
     Log('Existing JD Mix AI Engine version detected: ' + OldVersion + '. Proceeding with seamless upgrade to v{#MyAppVersion}.');
   end;
