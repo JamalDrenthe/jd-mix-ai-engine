@@ -54,12 +54,19 @@ jobs:
           New-Item -ItemType Directory -Force -Path artifacts/Standalone
           New-Item -ItemType Directory -Force -Path dist
           
-          # Stage VST3 bundle
-          Copy-Item -Recurse -Force "build/JDMixAIEngine_artefacts/Release/VST3/*" artifacts/VST3/
-          Compress-Archive -Path artifacts/VST3/* -DestinationPath dist/JDMixAIEngine-Windows-x64-VST3.zip
+          # Locate and stage VST3 bundle contents
+          Get-ChildItem -Path build -Recurse -Filter "*.vst3" | Select-Object -First 1 | ForEach-Object {
+            Write-Host "Found VST3: $($_.FullName)"
+            Copy-Item -Recurse -Force "$($_.FullName)\*" artifacts/VST3/
+          }
+          
+          # Locate and stage Standalone EXE
+          Get-ChildItem -Path build/JDMixAIEngine_artefacts -Recurse -Filter "*.exe" | ForEach-Object {
+            Write-Host "Found Standalone EXE: $($_.FullName)"
+            Copy-Item -Force $_.FullName artifacts/Standalone/
+          }
 
-          # Stage Standalone EXE
-          Copy-Item -Force "build/JDMixAIEngine_artefacts/Release/Standalone/*.exe" artifacts/Standalone/
+          Compress-Archive -Path artifacts/VST3/* -DestinationPath dist/JDMixAIEngine-Windows-x64-VST3.zip
           Copy-Item -Force "artifacts/Standalone/*.exe" dist/
 
       - name: Install Inno Setup
@@ -71,6 +78,8 @@ jobs:
       - name: Compile Inno Setup Installer (.exe)
         shell: pwsh
         run: |
+          Write-Host "Listing staged artifacts before ISCC:"
+          Get-ChildItem -Recurse artifacts
           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer/windows/JDMixAIEngine.iss
 
       - name: Upload Windows Binaries & Installer (.exe)
