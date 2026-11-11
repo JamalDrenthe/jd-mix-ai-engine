@@ -8,6 +8,15 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # JUCE 8 Setup
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/JUCE/CMakeLists.txt")
     add_subdirectory(external/JUCE)
+else()
+    include(FetchContent)
+    FetchContent_Declare(
+        JUCE
+        GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+        GIT_TAG 8.0.4
+        GIT_SHALLOW TRUE
+    )
+    FetchContent_MakeAvailable(JUCE)
 endif()
 
 # Main VST3 Plugin Target

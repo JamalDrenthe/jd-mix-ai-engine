@@ -26,12 +26,17 @@ jobs:
         with:
           arch: x64
 
-      - name: Configure CMake
+      - name: Checkout JUCE 8
+        shell: bash
         run: |
-          cmake -B build -G "Ninja" `
-            -DCMAKE_BUILD_TYPE=Release `
-            -DJUCE_BUILD_EXTRAS=OFF `
-            -DJUCE_BUILD_EXAMPLES=OFF
+          if [ ! -f "external/JUCE/CMakeLists.txt" ]; then
+            git clone --depth 1 --branch 8.0.4 https://github.com/juce-framework/JUCE.git external/JUCE
+          fi
+
+      - name: Configure CMake
+        shell: pwsh
+        run: |
+          cmake -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DJUCE_BUILD_EXTRAS=OFF -DJUCE_BUILD_EXAMPLES=OFF
 
       - name: Build VST3, Standalone EXE, and Tests
         run: |
