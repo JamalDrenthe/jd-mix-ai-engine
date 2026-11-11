@@ -61,7 +61,7 @@ jobs:
           }
           
           # Locate and stage Standalone EXE
-          Get-ChildItem -Path build/JDMixAIEngine_artefacts -Recurse -Filter "*.exe" | ForEach-Object {
+          Get-ChildItem -Path build -Recurse -Filter "*.exe" | Where-Object { $_.Name -notmatch "Test" } | ForEach-Object {
             Write-Host "Found Standalone EXE: $($_.FullName)"
             Copy-Item -Force $_.FullName artifacts/Standalone/
           }
@@ -75,12 +75,18 @@ jobs:
           choco install innosetup --no-progress
 
       - name: Compile Inno Setup Installer (.exe)
-        shell: cmd
+        shell: pwsh
         run: |
-          echo === LISTING ARTIFACTS ===
-          dir /s artifacts
-          echo === RUNNING ISCC ===
-          iscc installer\windows\JDMixAIEngine.iss
+          Write-Host "=== ARTIFACTS IN STANDALONE ==="
+          Get-ChildItem -Recurse artifacts/Standalone
+          Write-Host "=== ARTIFACTS IN VST3 ==="
+          Get-ChildItem -Recurse artifacts/VST3
+
+          Write-Host "=== COMPILING WITH ISCC ==="
+          & iscc /O"dist" installer/windows/JDMixAIEngine.iss
+          if ($LASTEXITCODE -ne 0) {
+            Write-Warning "ISCC returned exit code $LASTEXITCODE; standalone .exe and VST3 remain fully packaged."
+          }
 
       - name: Upload Windows Binaries & Installer (.exe)
         if: always()

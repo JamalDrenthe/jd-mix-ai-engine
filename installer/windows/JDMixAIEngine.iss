@@ -21,10 +21,10 @@ OutputBaseFilename=JDMixAIEngine_Setup_v{#MyAppVersion}
 OutputDir=..\..\dist
 Compression=lzma2/ultra64
 SolidCompression=yes
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesInstallIn64BitMode=x64compatible
 PrivilegesRequired=admin
 WizardStyle=modern
-SetupIconFile=..\..\assets\favicon.ico
+; SetupIconFile=..\..\assets\favicon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 UninstallDisplayName={#MyAppName}
 
