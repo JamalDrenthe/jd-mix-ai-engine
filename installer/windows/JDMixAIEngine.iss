@@ -40,7 +40,7 @@ Name: "flstudio"; Description: "Install FL Studio 64-bit VST3 Plugin ({commoncf}
 
 [Files]
 ; Standalone Windows Executable (.exe)
-Source: "..\..\artifacts\Standalone\*.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
+Source: "..\..\artifacts\Standalone\JD Mix AI Engine.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 ; VST3 Bundle for FL Studio and other 64-bit DAWs
 Source: "..\..\artifacts\VST3\*"; DestDir: "{commoncf}\VST3\JD Mix AI Engine.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs; Tasks: flstudio
@@ -54,9 +54,9 @@ Name: "{group}\Uninstall {#MyAppName}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Registry]
-Root: HKLM; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "Version"; ValueData: "{#MyAppVersion}"; Flags: uninsdeletekey
-Root: HKLM; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "InstallDir"; ValueData: "{app}"; Flags: uninsdeletekey
-Root: HKLM; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "VST3Path"; ValueData: "{commoncf}\VST3\JD Mix AI Engine.vst3"; Flags: uninsdeletekey
+Root: HKEY_LOCAL_MACHINE; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "Version"; ValueData: "{#MyAppVersion}"; Flags: uninsdeletekey
+Root: HKEY_LOCAL_MACHINE; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "InstallDir"; ValueData: "{app}"; Flags: uninsdeletekey
+Root: HKEY_LOCAL_MACHINE; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "VST3Path"; ValueData: "{commoncf}\VST3\JD Mix AI Engine.vst3"; Flags: uninsdeletekey
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent

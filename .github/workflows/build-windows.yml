@@ -66,7 +66,8 @@ jobs:
           # Locate and stage Standalone EXE with clean names
           Get-ChildItem -Path build -Recurse -Filter "*.exe" | Where-Object { $_.Name -notmatch "Test" } | ForEach-Object {
             Write-Host "Found Standalone EXE: $($_.FullName)"
-            Copy-Item -Force $_.FullName artifacts/Standalone/
+            Copy-Item -Force $_.FullName "artifacts/Standalone/JD Mix AI Engine.exe"
+            Copy-Item -Force $_.FullName "artifacts/Standalone/$($_.Name)"
             Copy-Item -Force $_.FullName "dist/JD-Mix-AI-Engine.exe"
             Copy-Item -Force $_.FullName "dist/JDMixAIEngine.exe"
           }
@@ -90,6 +91,8 @@ jobs:
 
           Write-Host "=== COMPILING WITH ISCC ==="
           iscc /O"dist" installer/windows/JDMixAIEngine.iss
+          Write-Host "=== FINAL DIST DIRECTORY CONTENTS ==="
+          Get-ChildItem -Recurse dist
 
       - name: Upload Windows Binaries & Installer (.exe)
         if: always()
