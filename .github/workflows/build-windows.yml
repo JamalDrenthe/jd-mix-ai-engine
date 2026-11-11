@@ -75,34 +75,15 @@ jobs:
           choco install innosetup --no-progress
 
       - name: Compile Inno Setup Installer (.exe)
-        shell: pwsh
+        shell: cmd
         run: |
-          Write-Host "Listing staged artifacts before ISCC:"
-          Get-ChildItem -Recurse artifacts
-          
-          # Find iscc executable dynamically across standard install locations
-          $isccCmd = Get-Command iscc -ErrorAction SilentlyContinue
-          $iscc = if ($isccCmd) { $isccCmd.Source } else { $null }
-          if (-not $iscc) {
-            $candidates = @(
-              "C:\Program Files\Inno Setup 6\ISCC.exe",
-              "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
-              "C:\ProgramData\chocolatey\bin\iscc.exe"
-            )
-            foreach ($c in $candidates) {
-              if (Test-Path $c) { $iscc = $c; break }
-            }
-          }
-          if (-not $iscc) {
-            throw "ISCC.exe could not be located on the system."
-          }
-          Write-Host "Using ISCC at: $iscc"
-          & $iscc installer/windows/JDMixAIEngine.iss
-          if ($LASTEXITCODE -ne 0) {
-            throw "ISCC failed with exit code $LASTEXITCODE"
-          }
+          echo === LISTING ARTIFACTS ===
+          dir /s artifacts
+          echo === RUNNING ISCC ===
+          iscc installer\windows\JDMixAIEngine.iss
 
       - name: Upload Windows Binaries & Installer (.exe)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: JDMixAIEngine-Windows-x64-Release
