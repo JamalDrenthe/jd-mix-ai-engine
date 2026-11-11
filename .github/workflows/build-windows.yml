@@ -1,0 +1,77 @@
+name: Build Windows VST3 & Standalone EXE (FL Studio First)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v4
+
+      - name: Enable MSVC Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -G "Ninja" `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DJUCE_BUILD_EXTRAS=OFF `
+            -DJUCE_BUILD_EXAMPLES=OFF
+
+      - name: Build VST3, Standalone EXE, and Tests
+        run: |
+          cmake --build build --config Release --target JDMixAIEngine_VST3 JDMixAIEngine_Standalone FifoFuzzTest DspChainTest
+
+      - name: Run Tests
+        run: |
+          .\build\FifoFuzzTest.exe
+          .\build\DspChainTest.exe
+
+      - name: Stage Binaries
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path artifacts
+          New-Item -ItemType Directory -Force -Path dist
+          
+          # Stage VST3 bundle
+          Copy-Item -Recurse -Force "build/JDMixAIEngine_artefacts/Release/VST3/*.vst3" artifacts/
+          Compress-Archive -Path artifacts/*.vst3 -DestinationPath dist/JDMixAIEngine-Windows-x64-VST3.zip
+
+          # Stage Standalone EXE
+          Copy-Item -Force "build/JDMixAIEngine_artefacts/Release/Standalone/*.exe" artifacts/
+          Copy-Item -Force "artifacts/*.exe" dist/
+
+      - name: Compile Inno Setup Installer (.exe)
+        shell: pwsh
+        run: |
+          $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          if (Test-Path $isccPath) {
+            & $isccPath installer/windows/JDMixAIEngine.iss
+          } else {
+            Write-Host "ISCC not found in standard path, trying PATH..."
+            iscc installer/windows/JDMixAIEngine.iss
+          }
+
+      - name: Upload Windows Binaries & Installer (.exe)
+        uses: actions/upload-artifact@v4
+        with:
+          name: JDMixAIEngine-Windows-x64-Release
+          path: |
+            dist/*
+            artifacts/*.exe
+          retention-days: 14

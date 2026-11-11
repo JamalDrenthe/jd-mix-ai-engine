@@ -1,0 +1,21 @@
+# Build directories
+build/
+cmake-build-*/
+.cache/
+bin/
+
+# JUCE submodule contents if not tracking full tree
+# (If tracked as submodule, git handles external/JUCE commit hash)
+
+# IDE / OS files
+.vscode/
+.idea/
+*.swp
+*.DS_Store
+Thumbs.db
+
+# VST3 artifacts
+*.vst3
+*.exe
+*.dll
+*.pdb

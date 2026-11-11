@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Mix sessions: must be authenticated and only access own sessions or public presets
+    match /mixSessions/{sessionId} {
+      allow read: if request.auth != null && (resource.data.userId == request.auth.uid || resource.data.isPublic == true);
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+
+      match /snapshots/{snapshotId} {
+        allow read, write: if request.auth != null && get(/databases/$(database)/documents/mixSessions/$(sessionId)).data.userId == request.auth.uid;
+      }
+    }
+
+    // Default deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
