@@ -40,10 +40,10 @@ Name: "flstudio"; Description: "Install FL Studio 64-bit VST3 Plugin ({commoncf}
 
 [Files]
 ; Standalone Windows Executable (.exe)
-Source: "..\..\artifacts\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\artifacts\Standalone\*.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
 
 ; VST3 Bundle for FL Studio and other 64-bit DAWs
-Source: "..\..\artifacts\*.vst3\*"; DestDir: "{commoncf}\VST3\JD Mix AI Engine.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs; Tasks: flstudio
+Source: "..\..\artifacts\VST3\*"; DestDir: "{commoncf}\VST3\JD Mix AI Engine.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs; Tasks: flstudio
 
 ; User Presets (only install if not present, never overwrite user customizations during update)
 Source: "..\..\presets\*"; DestDir: "{userdocs}\Image-Line\FL Studio\Presets\Plugin presets\Effects\VST3\JD Mix AI Engine"; Flags: ignoreversion recursesubdirs createallsubdirs onlyifdoesntexist uninsneveruninstall; Check: DirExists(ExpandConstant('{userdocs}\Image-Line\FL Studio'))
