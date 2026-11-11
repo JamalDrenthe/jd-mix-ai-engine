@@ -20,7 +20,28 @@
 
 ---
 
-### **[📥 Download Latest Installer (.exe) & VST3](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases)** • **[📖 Architectural Specs](#-architectural-highlights)** • **[⚡ Quick Start](#-fl-studio-quick-start-guide)** • **[🛠️ Build Guide](#-building-from-source)**
+### 💾 Direct Downloads (Windows x64)
+
+<a href="https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JDMixAIEngine_Setup_v1.0.0.exe">
+  <img src="https://img.shields.io/badge/DOWNLOAD-WINDOWS%20INSTALLER%20(.EXE)-0071e3?style=for-the-badge&logo=windows&logoColor=white&labelColor=000000" height="42">
+</a>
+&nbsp;
+<a href="https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JD-Mix-AI-Engine.exe">
+  <img src="https://img.shields.io/badge/DOWNLOAD-STANDALONE%20(.EXE)-2997ff?style=for-the-badge&logo=windows&logoColor=white&labelColor=000000" height="42">
+</a>
+&nbsp;
+<a href="https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JDMixAIEngine-Windows-x64-VST3.zip">
+  <img src="https://img.shields.io/badge/DOWNLOAD-FL%20STUDIO%20VST3%20(.ZIP)-30D158?style=for-the-badge&logo=vst&logoColor=white&labelColor=000000" height="42">
+</a>
+
+<br><br>
+
+| Package | Format | Purpose | Direct Download Link |
+| :--- | :---: | :--- | :---: |
+| 🎛️ **Full Windows Setup (Recommended)** | `.exe` | Automatic VST3 directory detection, auto updates & uninstaller | [**`JDMixAIEngine_Setup_v1.0.0.exe`**](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JDMixAIEngine_Setup_v1.0.0.exe) |
+| 🚀 **Standalone Application** | `.exe` | Portable hardware-accelerated desktop executable (no install needed) | [**`JD-Mix-AI-Engine.exe`**](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JD-Mix-AI-Engine.exe) |
+| 📦 **FL Studio 64-bit VST3 Plugin** | `.zip` | Portable VST3 bundle for manual installation | [**`JDMixAIEngine-Windows-x64-VST3.zip`**](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JDMixAIEngine-Windows-x64-VST3.zip) |
+| 🔄 **Always Latest Version** | Auto | Automatically redirects to the latest release | [**Latest Release Download**](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/latest/download/JDMixAIEngine_Setup_v1.0.0.exe) |
 
 ---
 
@@ -103,18 +124,18 @@ Crafted in an obsidian, graphite, and electric neon aesthetic (`#090A0F`, `#00E5
 
 The engine is available in three ready-to-use formats:
 
-| Format | File Name | Description |
-|---|---|---|
-| **Windows Installer** | `JDMixAIEngine_Setup_v1.0.0.exe` | **Recommended.** Single-click Inno Setup installer that detects FL Studio's VST3 directory and presets automatically. |
-| **Standalone Desktop App** | `JD Mix AI Engine.exe` | Portable Windows desktop app. Run JD Mix AI Engine directly without opening any DAW! |
-| **VST3 Plugin** | `JD Mix AI Engine.vst3` | 64-bit VST3 bundle for FL Studio, Ableton Live, Studio One, Reaper, and Cubase. |
+| Format | File Name | Description | Direct Link |
+|---|---|---|:---:|
+| **Windows Installer** | `JDMixAIEngine_Setup_v1.0.0.exe` | **Recommended.** Single-click installer with automatic FL Studio VST3 directory detection, auto update & clean uninstall. | [**⬇️ Download .exe**](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JDMixAIEngine_Setup_v1.0.0.exe) |
+| **Standalone Desktop App** | `JD-Mix-AI-Engine.exe` | Portable Windows desktop application. Run JD Mix AI Engine directly without opening any DAW! | [**⬇️ Download .exe**](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JD-Mix-AI-Engine.exe) |
+| **FL Studio VST3 Plugin** | `JDMixAIEngine-Windows-x64-VST3.zip` | 64-bit VST3 bundle for FL Studio, Ableton Live, Studio One, Reaper, and Cubase. | [**⬇️ Download .zip**](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JDMixAIEngine-Windows-x64-VST3.zip) |
 
 ---
 
 ## 🚀 FL Studio Quick Start Guide
 
 ### Step 1: Install
-Download and run `JDMixAIEngine_Setup_v1.0.0.exe`, or drop `JD Mix AI Engine.vst3` directly into:
+Download and run [**`JDMixAIEngine_Setup_v1.0.0.exe`**](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JDMixAIEngine_Setup_v1.0.0.exe), or drop `JDMixAIEngine.vst3` directly into:
 ```
 C:\Program Files\Common Files\VST3\
 ```

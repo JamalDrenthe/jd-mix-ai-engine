@@ -7,6 +7,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -60,14 +63,15 @@ jobs:
             Copy-Item -Recurse -Force "$($_.FullName)\*" artifacts/VST3/
           }
           
-          # Locate and stage Standalone EXE
+          # Locate and stage Standalone EXE with clean names
           Get-ChildItem -Path build -Recurse -Filter "*.exe" | Where-Object { $_.Name -notmatch "Test" } | ForEach-Object {
             Write-Host "Found Standalone EXE: $($_.FullName)"
             Copy-Item -Force $_.FullName artifacts/Standalone/
+            Copy-Item -Force $_.FullName "dist/JD-Mix-AI-Engine.exe"
+            Copy-Item -Force $_.FullName "dist/JDMixAIEngine.exe"
           }
 
           Compress-Archive -Path artifacts/VST3/* -DestinationPath dist/JDMixAIEngine-Windows-x64-VST3.zip
-          Copy-Item -Force "artifacts/Standalone/*.exe" dist/
 
       - name: Install Inno Setup
         shell: pwsh
@@ -96,3 +100,15 @@ jobs:
             dist/*
             artifacts/Standalone/*.exe
           retention-days: 14
+
+      - name: Publish Binaries to GitHub Release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0
+          name: "JD Mix AI Engine v1.0.0 (Production Release)"
+          files: |
+            dist/*.exe
+            dist/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
