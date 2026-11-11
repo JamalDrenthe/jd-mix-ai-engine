@@ -46,7 +46,7 @@ Source: "..\..\artifacts\Standalone\*.exe"; DestDir: "{app}"; DestName: "{#MyApp
 Source: "..\..\artifacts\VST3\*"; DestDir: "{commoncf}\VST3\JD Mix AI Engine.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs; Tasks: flstudio
 
 ; User Presets (only install if not present, never overwrite user customizations during update)
-Source: "..\..\presets\*"; DestDir: "{userdocs}\Image-Line\FL Studio\Presets\Plugin presets\Effects\VST3\JD Mix AI Engine"; Flags: ignoreversion recursesubdirs createallsubdirs onlyifdoesntexist uninsneveruninstall; Check: DirExists(ExpandConstant('{userdocs}\Image-Line\FL Studio'))
+Source: "..\..\presets\*"; DestDir: "{userdocs}\Image-Line\FL Studio\Presets\Plugin presets\Effects\VST3\JD Mix AI Engine"; Flags: ignoreversion recursesubdirs createallsubdirs onlyifdoesntexist uninsneveruninstall
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -65,54 +65,6 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}
 ; Clean up app directory and VST3 bundle
 Type: filesandordirs; Name: "{commoncf}\VST3\JD Mix AI Engine.vst3"
 Type: filesandordirs; Name: "{app}"
-
-[Code]
-// Custom Pascal Scripting for Seamless Update & Clean Uninstall
-
-function GetExistingInstallDir(): String;
-var
-  InstallPath: String;
-begin
-  InstallPath := '';
-  RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\JD Audio Labs\JD Mix AI Engine', 'InstallDir', InstallPath);
-  Result := InstallPath;
-end;
-
-// Detect existing installation during update
-function InitializeSetup(): Boolean;
-var
-  OldVersion: String;
-begin
-  OldVersion := '';
-  if RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\JD Audio Labs\JD Mix AI Engine', 'Version', OldVersion) then
-  begin
-    Log('Existing JD Mix AI Engine version detected: ' + OldVersion + '. Proceeding with seamless upgrade to v{#MyAppVersion}.');
-  end;
-  Result := True;
-end;
-
-// Clean Uninstall Flow with optional preset preservation
-procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
-var
-  PresetDir: String;
-begin
-  if CurUninstallStep = usPostUninstall then
-  begin
-    PresetDir := ExpandConstant('{userdocs}\Image-Line\FL Studio\Presets\Plugin presets\Effects\VST3\JD Mix AI Engine');
-    if DirExists(PresetDir) then
-    begin
-      if MsgBox('Wilt u uw opgeslagen gebruikers-presets en snapshots behouden voor toekomstige updates?', mbConfirmation, MB_YESNO) = IDNO then
-      begin
-        DelTree(PresetDir, True, True, True);
-        Log('User presets removed upon user request.');
-      end
-      else
-      begin
-        Log('User presets preserved for future updates.');
-      end;
-    end;
-  end;
-end;
 
 [Messages]
 WelcomeLabel2=This installer will setup or upgrade JD Mix AI Engine to version {#MyAppVersion}.%n%nRunning audio software (FL Studio) will be gracefully refreshed.
