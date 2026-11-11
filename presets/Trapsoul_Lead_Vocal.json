@@ -1,0 +1,23 @@
+{
+  "name": "2026 Modern Trapsoul Lead Vocal",
+  "author": "JD Audio Labs",
+  "version": "1.0.0",
+  "description": "Optimized lead vocal chain adhering to 2026 master production targets: clean sub rumble cut, dynamic 285 Hz boxiness scoop, dual-pass de-essing, serial Opto + FET leveling, high-shelf air, and -14 LUFS stem pocket alignment.",
+  "parameters": {
+    "prep_denoise": 0.15,
+    "prep_breath": -12.0,
+    "gain_clip_trim": 0.0,
+    "eq_sub_hpf": 95.0,
+    "eq_sub_mud": 285.0,
+    "eq_sub_mud_gain": -3.5,
+    "deess_p1_thresh": -18.0,
+    "comp_opto_thresh": -14.0,
+    "comp_fet_thresh": -10.0,
+    "deess_p2_thresh": -16.0,
+    "sat_drive": 0.22,
+    "eq_add_air": 2.5,
+    "send_room": 0.18,
+    "send_plate": 0.25,
+    "pocket_target_offset": -4.5
+  }
+}

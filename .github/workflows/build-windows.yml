@@ -61,16 +61,16 @@ jobs:
           Copy-Item -Force "build/JDMixAIEngine_artefacts/Release/Standalone/*.exe" artifacts/
           Copy-Item -Force "artifacts/*.exe" dist/
 
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          choco install innosetup --no-progress
+          "C:\Program Files (x86)\Inno Setup 6" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
       - name: Compile Inno Setup Installer (.exe)
         shell: pwsh
         run: |
-          $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-          if (Test-Path $isccPath) {
-            & $isccPath installer/windows/JDMixAIEngine.iss
-          } else {
-            Write-Host "ISCC not found in standard path, trying PATH..."
-            iscc installer/windows/JDMixAIEngine.iss
-          }
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer/windows/JDMixAIEngine.iss
 
       - name: Upload Windows Binaries & Installer (.exe)
         uses: actions/upload-artifact@v4
