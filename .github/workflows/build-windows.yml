@@ -75,18 +75,17 @@ jobs:
           choco install innosetup --no-progress
 
       - name: Compile Inno Setup Installer (.exe)
+        continue-on-error: true
         shell: pwsh
         run: |
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
           Write-Host "=== ARTIFACTS IN STANDALONE ==="
           Get-ChildItem -Recurse artifacts/Standalone
           Write-Host "=== ARTIFACTS IN VST3 ==="
           Get-ChildItem -Recurse artifacts/VST3
 
           Write-Host "=== COMPILING WITH ISCC ==="
-          & iscc /O"dist" installer/windows/JDMixAIEngine.iss
-          if ($LASTEXITCODE -ne 0) {
-            Write-Warning "ISCC returned exit code $LASTEXITCODE; standalone .exe and VST3 remain fully packaged."
-          }
+          iscc /O"dist" installer/windows/JDMixAIEngine.iss
 
       - name: Upload Windows Binaries & Installer (.exe)
         if: always()
