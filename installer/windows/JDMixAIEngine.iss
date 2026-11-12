@@ -29,21 +29,21 @@ UninstallDisplayIcon={app}\{#MyAppExeName}
 UninstallDisplayName={#MyAppName}
 
 ; Continuous Update Flow Settings:
-; Gracefully detects and closes running DAW / Standalone instances to prevent file-locking
+; Detects files in use (standalone app, or the VST3 loaded inside FL Studio) and asks to close them
 CloseApplications=yes
-CloseApplicationsFilter=*.exe,FL64.exe,FL.exe,{#MyAppExeName}
+CloseApplicationsFilter=*.exe,*.dll,*.vst3
 RestartApplications=no
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "flstudio"; Description: "Install FL Studio 64-bit VST3 Plugin ({commoncf}\VST3)"; GroupDescription: "Plugin Formats"; Flags: checkedonce
+Name: "flstudio"; Description: "Install FL Studio 64-bit VST3 Plugin (C:\Program Files\Common Files\VST3)"; GroupDescription: "Plugin Formats"
 
 [Files]
 ; Standalone Windows Executable (.exe)
 Source: "..\..\artifacts\Standalone\JD Mix AI Engine.exe"; DestDir: "{app}"; Flags: ignoreversion
 
-; VST3 Bundle for FL Studio and other 64-bit DAWs
-Source: "..\..\artifacts\VST3\*"; DestDir: "{commoncf}\VST3\JD Mix AI Engine.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs; Tasks: flstudio
+; VST3 Bundle (copies contents into "JD Mix AI Engine.vst3" under 64-bit Common Files\VST3)
+Source: "..\..\artifacts\VST3\*"; DestDir: "{commoncf64}\VST3\JD Mix AI Engine.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs; Tasks: flstudio
 
 ; User Presets (only install if not present, never overwrite user customizations during update)
 Source: "..\..\presets\*"; DestDir: "{userdocs}\Image-Line\FL Studio\Presets\Plugin presets\Effects\VST3\JD Mix AI Engine"; Flags: ignoreversion recursesubdirs createallsubdirs onlyifdoesntexist uninsneveruninstall
@@ -54,16 +54,16 @@ Name: "{group}\Uninstall {#MyAppName}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Registry]
-Root: HKEY_LOCAL_MACHINE; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "Version"; ValueData: "{#MyAppVersion}"; Flags: uninsdeletekey
-Root: HKEY_LOCAL_MACHINE; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "InstallDir"; ValueData: "{app}"; Flags: uninsdeletekey
-Root: HKEY_LOCAL_MACHINE; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "VST3Path"; ValueData: "{commoncf}\VST3\JD Mix AI Engine.vst3"; Flags: uninsdeletekey
+Root: HKLM; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "Version"; ValueData: "{#MyAppVersion}"; Flags: uninsdeletekey
+Root: HKLM; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "InstallDir"; ValueData: "{app}"; Flags: uninsdeletekey
+Root: HKLM; Subkey: "Software\JD Audio Labs\JD Mix AI Engine"; ValueType: string; ValueName: "VST3Path"; ValueData: "{commoncf64}\VST3\JD Mix AI Engine.vst3"; Flags: uninsdeletekey
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
 ; Clean up app directory and VST3 bundle
-Type: filesandordirs; Name: "{commoncf}\VST3\JD Mix AI Engine.vst3"
+Type: filesandordirs; Name: "{commoncf64}\VST3\JD Mix AI Engine.vst3"
 Type: filesandordirs; Name: "{app}"
 
 [Messages]

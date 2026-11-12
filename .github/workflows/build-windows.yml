@@ -80,7 +80,6 @@ jobs:
           choco install innosetup --no-progress
 
       - name: Compile Inno Setup Installer (.exe)
-        continue-on-error: true
         shell: pwsh
         run: |
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
@@ -91,8 +90,16 @@ jobs:
 
           Write-Host "=== COMPILING WITH ISCC ==="
           iscc /O"dist" installer/windows/JDMixAIEngine.iss
+          
           Write-Host "=== FINAL DIST DIRECTORY CONTENTS ==="
           Get-ChildItem -Recurse dist
+          
+          $installer = Get-ChildItem -Path dist -Filter "*Setup*.exe"
+          if (-not $installer) {
+            Write-Error "CRITICAL: Inno Setup failed to produce installer executable in dist/"
+            exit 1
+          }
+          Write-Host "Verified installer produced: $($installer.FullName) ($($installer.Length) bytes)"
 
       - name: Upload Windows Binaries & Installer (.exe)
         if: always()

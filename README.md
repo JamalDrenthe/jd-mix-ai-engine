@@ -135,10 +135,12 @@ The engine is available in three ready-to-use formats:
 ## 🚀 FL Studio Quick Start Guide
 
 ### Step 1: Install
-Download and run [**`JDMixAIEngine_Setup_v1.0.0.exe`**](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JDMixAIEngine_Setup_v1.0.0.exe), or drop `JDMixAIEngine.vst3` directly into:
+* **Option A (Recommended Installer)**: Download and run [**`JDMixAIEngine_Setup_v1.0.0.exe`**](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JDMixAIEngine_Setup_v1.0.0.exe). It automatically installs `JD Mix AI Engine.vst3` into the exact 64-bit VST3 folder FL Studio scans.
+* **Option B (Manual ZIP Extraction)**: Extract [**`JDMixAIEngine-Windows-x64-VST3.zip`**](https://github.com/JamalDrenthe/jd-mix-ai-engine/releases/download/v1.0.0/JDMixAIEngine-Windows-x64-VST3.zip) so the resulting folder is placed at:
 ```
-C:\Program Files\Common Files\VST3\
+C:\Program Files\Common Files\VST3\JD Mix AI Engine.vst3\
 ```
+*(Inside `JD Mix AI Engine.vst3` you will have the standard VST3 structure: `Contents\x86_64-win\JD Mix AI Engine.vst3` and `Contents\Resources\moduleinfo.json`)*
 
 ### Step 2: Scan in FL Studio
 1. Open **FL Studio**.
